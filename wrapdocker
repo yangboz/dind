@@ -88,10 +88,16 @@ rm -rf /var/run/docker.pid
 
 # If we were given a PORT environment variable, start as a simple daemon;
 # otherwise, spawn a shell as well
-if [ "$PORT" ]
+if [ "$PORTS" ]
 then
-	exec dockerd -H 0.0.0.0:$PORT -H unix:///var/run/docker.sock \
-		$DOCKER_DAEMON_ARGS
+	#PORTS="1234,5678"
+	#echo  "PORTS:$PORTS"
+	portsArr=(${PORTS//,/ })
+	printf "exec dockerd "
+	for port in "${portsArr[@]}"; do
+	   printf " -H 0.0.0.0:%s$port"
+	done
+	printf " -H unix:///var/run/docker.sock  $DOCKER_DAEMON_ARGS" 
 else
 	if [ "$LOG" == "file" ]
 	then
