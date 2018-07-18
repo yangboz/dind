@@ -79,6 +79,12 @@ Run Docker-in-Docker and expose the inside Docker to the outside world:
 docker run --privileged -d -p 4444 -e PORT=4444 dind
 ```
 
+With multiple port number support:
+```bash
+docker run --privileged -d -p 4444 -p 5555 -e PORTS=4444,5555 dind
+```
+
+
 Note: when started with the `PORT` environment variable, the image will just
 the Docker daemon and expose it over said port. When started *without* the
 `PORT` environment variable, the image will run the Docker daemon in the
