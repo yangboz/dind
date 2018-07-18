@@ -90,14 +90,18 @@ rm -rf /var/run/docker.pid
 # otherwise, spawn a shell as well
 if [ "$PORTS" ]
 then
-	#PORTS="1234,5678"
-	#echo  "PORTS:$PORTS"
-	portsArr=(${PORTS//,/ })
-	printf "exec dockerd "
-	for port in "${portsArr[@]}"; do
-	   printf " -H 0.0.0.0:%s$port"
-	done
-	printf " -H unix:///var/run/docker.sock  $DOCKER_DAEMON_ARGS" 
+	function mdind_output() {
+		#PORTS="1234,5678"
+		# echo  "PORTS:$PORTS"
+		portsArr=(${PORTS//,/ })
+		 printf " dockerd "
+		 for port in "${portsArr[@]}"; do
+		    printf " -H 0.0.0.0:%s$port"
+		 done
+		 printf " -H unix:///var/run/docker.sock  $DOCKER_DAEMON_ARGS"
+	}
+	# echo $(mdind_output)
+	eval $(mdind_output)
 else
 	if [ "$LOG" == "file" ]
 	then
